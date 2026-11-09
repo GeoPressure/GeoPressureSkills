@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: analysis-from-migratetech-file
+expected_outcome: |
+  Recognises Migrate Technology data that GeoPressureR reads, checks the setup and versions, asks for what the data cannot tell (equipment and recapture site and dates, rough range), sets up a GeoPressureTemplate project with the raw file in data/raw-tag/CB619/, reads the tag and prepares labelling, and stops for the user to label in trainset() instead of presenting a wintering location built on unchecked labels.
+context:
+  scaffold_script: place-files.sh

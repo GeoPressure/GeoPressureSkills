@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: explain-pressure-method
+expected_outcome: |
+  Explains that, for each stationary period, the logger's pressure is compared with ERA5 surface pressure at every location (after removing the mean difference due to altitude), and that the mismatch is turned into a likelihood with a standard deviation; cites Nussbaumer et al. 2023 (10.1111/2041-210X.14043) and links the Manual chapter or code.

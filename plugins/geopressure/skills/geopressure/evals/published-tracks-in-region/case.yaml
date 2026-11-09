@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: published-tracks-in-region
+expected_outcome: |
+  Uses a real source of published tracks (GeoLocator Data Packages on Zenodo community geolocator-dp, the Master package via GeoLocatoR::read_zenodo(), or GeoLocator Explorer) and says where any species list comes from instead of listing species from memory.

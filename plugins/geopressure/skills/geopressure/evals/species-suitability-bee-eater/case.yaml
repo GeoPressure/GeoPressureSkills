@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: species-suitability-bee-eater
+expected_outcome: |
+  Notes that the Manual flags aerial feeders such as bee-eaters as a poor fit for the method, explains why (no clear separation between stationary and flight periods), gives the data requirement of continuous pressure at better than 1-hour resolution and the value of acceleration, and points to the Manual data requirements and the forum or GeoCollab for advice.

@@ -1,0 +1,16 @@
+{
+  "name": "geopressure",
+  "owner": { "name": "Raphaël Nussbaumer" },
+  "plugins": [
+    {
+      "name": "geopressure",
+      "source": "./plugins/geopressure",
+      "description": "For GeoPressure users: geolocator analysis with GeoPressureR, the method, and GeoLocator Data Packages"
+    },
+    {
+      "name": "geopressure-dev",
+      "source": "./plugins/geopressure-dev",
+      "description": "For GeoPressure developers: shared standard, release order and cross-repo consistency"
+    }
+  ]
+}

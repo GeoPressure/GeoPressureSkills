@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: wind-download-queue
+expected_outcome: |
+  Explains the Copernicus CDS queue limit per account, suggests fewer parallel requests or waiting, mentions the cloud source only if the installed version has it (checking the version), and does not ask for the user's key.

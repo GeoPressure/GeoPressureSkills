@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: update-old-script
+expected_outcome: |
+  Rewrites the script with current GeoPressureR names found in NEWS and the reference (tag_create, tag_label_auto, tag_label_write, tag_label, tag_set_map, geopressure_map, twilight_create, bird_create, tag_download_wind, graph_most_likely), keeps no removed function, and tells the user that results from the old version differ and should be recomputed.
+context:
+  scaffold_script: place-files.sh

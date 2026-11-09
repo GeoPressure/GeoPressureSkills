@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: api-rate-limit-error
+expected_outcome: |
+  Explains that the error comes from the GeoPressure API / Google Earth Engine limits, not from the user's data, suggests fewer parallel requests (the workers argument) or retrying later, and points to the forum or the GeoPressureAPI repo for service incidents.

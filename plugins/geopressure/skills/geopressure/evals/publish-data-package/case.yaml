@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: publish-data-package
+expected_outcome: |
+  Describes building and validating a GeoLocator Data Package with GeoLocatoR (read_geopressuretemplate, validate_gldp, write_gldp), uploading it to Zenodo in the geolocator-dp community, checking the draft with read_zenodo(draft = TRUE) before submitting, and leaves the Zenodo account steps to the user.

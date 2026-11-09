@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: methods-paragraph-from-config
+expected_outcome: |
+  Writes a methods paragraph whose parameter values come from the provided config.yml, cites both 2023 method papers, mentions ERA5 data and asks for or includes the GeoPressureR version, without inventing settings that are not in the config.
+context:
+  scaffold_script: place-files.sh
