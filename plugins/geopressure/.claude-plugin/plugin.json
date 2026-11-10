@@ -2,7 +2,10 @@
   "name": "geopressure",
   "version": "0.1.0",
   "description": "Help with multi-sensor geolocator data and the GeoPressure tools: run an analysis with GeoPressureR, answer questions about the code and method, and share or reuse GeoLocator Data Packages.",
-  "author": { "name": "Raphaël Nussbaumer" },
+  "author": {
+    "name": "Raphaël Nussbaumer"
+  },
   "homepage": "https://geopressure.org",
-  "repository": "https://github.com/GeoPressure/GeoPressureSkills"
+  "repository": "https://github.com/GeoPressure/GeoPressureSkills",
+  "license": "MIT"
 }

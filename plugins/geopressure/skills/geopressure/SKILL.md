@@ -1,5 +1,6 @@
 ---
 name: geopressure
+license: MIT
 description: Use for anything about tracking birds or other animals with multi-sensor geolocators (pressure, light, acceleration, temperature or magnetic loggers) and the GeoPressure tools - GeoPressureR, GeoPressureTemplate, GeoPressureManual, GeoPressureAPI, GeoLocatoR and GeoLocator Data Packages, GeoMagR, GeoPathSampleR, GeoLocator Explorer. Covers running an analysis from raw logger files (SOI .pressure/.glf/.acceleration, Migrate Technology .deg/.lux, Lund, PresTag, BAS, CSV), labelling flights, likelihood maps, trajectories with wind, altitude, reading and plotting results, error messages, updating old scripts, explaining the method and papers, citing, planning a tracking study, and publishing or reusing tracks on Zenodo. Use it even when no package is named, e.g. "here are my logger files, where did my bird go?"
 ---
 

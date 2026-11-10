@@ -1,5 +1,6 @@
 ---
 name: geopressure-dev
+license: MIT
 description: Use when developing, documenting, testing or releasing any GeoPressure repository (GeoPressureR, GeoLocatoR, GeoMagR, GeoPathSampleR, GeoPressureTemplate, GeoPressureManual, GeoLocator-DP, GeoLocatorMaster, GeoPressureAPI, GeoLocator Explorer, the geopressure.org website, altitude-validation, the geopressure skills). Also use when a change in one repo must be carried to the others (a renamed function or argument, a changed default, a new release), when re-rendering the GeoPressureManual, and when checking that the repos, the Manual, the Template and the skills are consistent with each other and with the current release.
 ---
 

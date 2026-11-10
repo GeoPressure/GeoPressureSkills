@@ -59,3 +59,7 @@ cd plugins/geopressure/skills && zip -r ../../../geopressure.zip geopressure -x 
   what a good answer contains. Add a case whenever a question goes badly; if the failure was a
   missing fact, fix the docs, not the skill. Run them from the skill folder (`plugins/<plugin>/skills/<skill>/`) with
   `claude plugin eval . --allow-tools Write,Edit,Bash --scaffold` (real, billed model runs).
+
+## Licence
+
+MIT. See [LICENSE](LICENSE).
