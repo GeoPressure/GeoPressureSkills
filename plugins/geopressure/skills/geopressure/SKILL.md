@@ -191,9 +191,10 @@ the Manual chapters `geolocator-read` and `geolocator-master`.
   simulations before quoting an interval, and give a range if there are few. For a region, give
   the share of simulations in it.
 - **Embargo and licence.** Embargoed data are not in the Master or the public files: the user asks
-  the authors, or opens a Zenodo share link in Explorer. `read_zenodo()` silently uses a Zenodo
-  token stored in the environment or keyring, so on a data owner's computer it may read embargoed
-  files: say so, and keep such data out of anything shared unless the user agrees. Licences are per
+  the authors, or opens a Zenodo share link in Explorer. Depending on the GeoLocatoR version
+  (see `?read_zenodo`), a Zenodo token stored in the environment or keyring may be used for every
+  record, so on a data owner's computer it can read embargoed files: say so, and keep such data
+  out of anything shared unless the user agrees. Licences are per
   package (`datapackages$licenses`); read each record's description for requests to data users.
 - **Cite and contact.** Cite the Master release and each source package of the birds used (join
   `datapackages` on `tags(master)$datapackage_id`). When a result rests on a few studies, suggest
