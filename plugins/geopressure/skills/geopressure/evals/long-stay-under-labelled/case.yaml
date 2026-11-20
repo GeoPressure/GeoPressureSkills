@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: long-stay-under-labelled
+expected_outcome: |
+  Does not conclude the stationary period is clean because its residual sd is below the sd used. Reads the outliers (n_outlier, the residual plot) and recommends discarding the isolated spikes, and the twilights that are off the line of their neighbours. Treats the abrupt 1.5 hPa step that lasts weeks as a possible second level to check in the raw pressure, not as noise. Keeps the changes small and proposes them in a new round file, not over the user's label file.

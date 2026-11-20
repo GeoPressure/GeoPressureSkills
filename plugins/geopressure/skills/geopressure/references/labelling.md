@@ -4,8 +4,9 @@ How to label flights, pressure and twilights so that GeoPressureR can locate the
 prepares label proposals and the evidence for them; the user reviews and decides (section 9).
 
 Written for GeoPressureR 3.9.1. The checks used here (`tag_label_check()`, `pressurepath_check()`,
-`tag_label_stapelev()`, `twilight_check()`, `tag$map_pressure$stapelev`) need 3.9.1 or later. Some
-are internal helpers, so read their help with `?fn` in R rather than on the website. With an older
+`tag_label_stapelev()`, `twilight_check()`, `tag$map_pressure$stapelev`) need 3.9.1 or later. The
+functions are exported, but `pressurepath_check()`, `tag_label_stapelev()` and `twilight_check()`
+are not in the website's reference index: read their help with `?fn` in R. With an older
 version, propose updating (the user decides), or use the apps: the TRAINSET Check button,
 `plot_pressurepath(type = "hist")`, `plot_twl_calib()`. Check every function and default against
 the installed version before relying on it.
@@ -155,7 +156,7 @@ This section is the single reference for limits; the rest of the guide points he
 | Change | Enough evidence | Not enough on its own |
 |---|---|---|
 | `flight` | High activity **and** a pressure change with a new ground level after it; or, without activity, a fast pressure change to a new ground level, at any time of day | A residual at a position; a large jump that comes back to the same level |
-| `discard` of a spike or an edge point | Visible in the raw tag pressure: far from its neighbours, or still descending at a stap edge | — |
+| `discard` of a spike or an edge point | 1–2 points > 5 hPa off their neighbours in the raw pressure, or > 3·`sd` off the running median of the residual at a plausible position (counted by `n_outlier`); or still descending at a stap edge | — |
 | `elev_n` | Abrupt steps in the raw pressure (within one or two samples) that return to the same offset at least twice, or a day/night alternation; confirmed in the residual at a plausible position | A residual that drifts slowly, or a split seen at one position only |
 | `discard` of a block (hours to days) | A step to another level that never recurs and is much shorter than the rest of the stap; or a stretch with no consistent level at any plausible position | A block that only disagrees with ERA5 at one position |
 
@@ -179,8 +180,7 @@ the extent and the calibration before changing pressure labels, and never discar
 it agree with light. Light is coarse (hundreds of km) and biased by shade, so use it to reject
 positions, not to place them. When two label choices are both defensible from the raw pressure (for
 example a short level kept as `elev_n` or discarded), prefer the one whose position light does not
-rule out. Without known sites, calibrate light with `geolight_map(fitted_location_duration = )`
-(long staps fitted from the twilights themselves); where light is low everywhere, it carries no
+rule out. Calibrate light on long staps too (Step 9); where light is low everywhere, it carries no
 information.
 
 **Change budget.** Outside flights, spikes and edge points:
@@ -204,13 +204,32 @@ them, but every other rule does.
   trimming the weather mismatch of a wrong position;
 - you created many short `elev_n` levels (under about 12 h each), or more than about three in a stap
   without a repeating pattern;
-- two levels sit less than about 2 hPa apart (they are one level);
+- two levels sit less than about 1 hPa apart (one level), or 1–2 hPa apart without abrupt steps
+  in the raw pressure;
 - you discarded where the raw pressure is smooth, only because the residual is large;
 - level offsets drift with the weather instead of staying constant.
 
 If positions move by more than a few pixels in two successive rounds while the discard grows, stop:
 go back to the round whose positions agree best with light and give plausible flight speeds, and
 report the stap as unresolved.
+
+**Signs of under-labelling.** The guardrails are not a reason to leave clear errors. Look again
+when:
+- a long stay (weeks to months) has no discard at all: in real data it almost always has isolated
+  spikes (the evidence table's definition) and often short bouts at another height (these count
+  against the budget and need abrupt steps in the raw pressure);
+- the stap's residual sd is below `sd` but `n_outlier > 0` or its residual plot still shows
+  outliers or abrupt steps: a small sd over thousands of points hides them. Read the plot of every
+  long stay (section 10), not only its sd;
+- a long stay has no discarded twilight while `twilight_check()` flags several off the line;
+- the starting labels came from someone else: re-check them and propose changes in a round file.
+
+**Is the change worth it?** A change is worth making when it removes a clear error (spike, missed
+flight, wrong level) or moves or sharpens the position of a stap that matters (long stays,
+stopovers on the route). Clear errors (spikes, edge points, missed flights, wrong levels, twilight
+outliers) are always fixed. Beyond them, stop when a change would only lower an sd and no longer
+moves or sharpens any position, even if more could be labelled. Detailed work where it changes the track,
+none where it does not.
 
 **Leave it, and say so.** Labelling a stap is optional; explaining it is not. A short stap with a
 weak map, a noisy stay without structure, or a doubtful feature is best left as it is and listed for
@@ -270,7 +289,7 @@ Only what is clear in the raw data, within the budget of section 3.1:
 
 - Points still descending or climbing at the start or end of a stap: extend the flight, or discard
   them.
-- Spikes: isolated points far off their neighbours (> 5 hPa).
+- Spikes (evidence table, section 3.1).
 - A jump > 20 hPa inside a stap that does not come back: a missed flight if activity or a new
   ground level supports it. A jump that comes back is a spike, an excursion or an elevation level
   (mountain and commuting birds move 10–100 hPa daily).
@@ -298,6 +317,14 @@ its residual. Check plausibility:
 
 - Each position reachable in the flight time (`stap2flight()`; a small passerine rarely exceeds
   60–80 km/h ground speed).
+- **Cumulative flight time matches the distance.** For each migration leg (between long stays,
+  e.g. breeding to wintering), sum the labelled flight hours and compare with the distance (code in
+  section 10; the great-circle distance between the two long stays is a lower bound, the distance
+  along the path an upper one). The **mean** ground speed of the leg should be plausible for the
+  species (small passerines about 30–60 km/h). Below about 20 km/h, some "flights" are local
+  movements (activity bouts with a pressure change but no new place): check them before trusting
+  the positions. Above about 70–80 km/h, flights are missed or truncated. Look at the leg total, not single flights: the speed of one short
+  flight between two weak short-stap positions is noise.
 - Light and pressure maps agree.
 - Short staps (< 1 day) have weak, flat maps and uncertain positions: their residuals say little.
 
@@ -307,7 +334,8 @@ A user can draw a better path in `geopressureviz(tag)`; `read_stap()` reads its 
 
 Compute the residuals at the position (`pressurepath_create()` for all staps,
 `geopressure_timeseries()` for one) and read `pressurepath_check()`. A stapelev needs a closer look
-when `sd_exceeded` is TRUE or `error_sd` is clearly higher than in the tag's other staps (published
+when `sd_exceeded` is TRUE, `error_sd` is clearly higher than in the tag's other staps, or
+`n_outlier > 0` in a stay longer than a few days (published
 long stays: median about 0.6 hPa, 90 % below 1.2 hPa). Look at its residual and at the plot
 (section 10) for these signs:
 
@@ -316,9 +344,9 @@ long stays: median about 0.6 hPa, 90 % below 1.2 hPa). Look at its residual and 
 | Daily means swinging by several hPa, no day cycle, no step | Wrong position | Test other positions; do not label |
 | A lasting shift of the 2–3 day rolling mean, at both positions | Level change partway through the stay | Split into levels by period (`elev_n`), or discard the shorter period |
 | A jump > 20 hPa that does not come back, with activity | Missed flight | Fix the flight labels |
-| Two modes, or day − night > 1 hPa, in a stay ≥ 1 day | Two heights | `elev_n` for each level, or discard the shorter / less consistent one |
+| Two modes, or day − night > 1 hPa, in a stay ≥ 1 day | Two heights | Look; `elev_n` only if the levels are ≥ 1 hPa apart with abrupt steps in the raw pressure, or discard the shorter / less consistent one |
 | First or last points of the stap far off | Descent or climb left in | Extend the flight, or discard them |
-| A few points > 5 hPa off | Spikes | Discard those points |
+| A few points off (`n_outlier`, evidence table) | Spikes | Discard those points |
 | Nothing specific | Noise, or a short stap with a weak position | Leave it, and say so |
 
 Example: Marsh Warbler DB231, a 95-day wintering stay. At the map's best pixel (29.9° S, 30.4° E) the
@@ -359,8 +387,7 @@ Settings:
   instead.
 
 Compare the old and new labels (section 10), and reject or trim the proposal when:
-- it discards more than the budget of section 3.1;
-- it makes a level shorter than about 12 h in total, or two levels less than about 2 hPa apart;
+- any sign of over-labelling of section 3.1 appears, or it exceeds the budget;
 - it drops points that look smooth in the raw pressure (restore them);
 - the residual within a new level still has a trend or a day cycle.
 
@@ -380,23 +407,38 @@ labelling. Two to four rounds is usual; later rounds are narrow fixes.
 - The guardrails of section 3.1 hold.
 - Positions no longer move between rounds, and flight speeds are plausible.
 
-These are conditions, not targets. If the next change would only lower an sd, stop.
+These are conditions, not targets; when they hold, apply "Is the change worth it?" (section 3.1).
 
 ### Step 9. Twilights (if light was recorded)
 
 - Create the twilights with the project's settings and check that nights are centred
   (`plot(tag, type = "twilight")`; twilights at midnight mean a wrong `twl_offset`).
-- Discard only twilights that do not follow the smooth line within a stap. With a calibration and a
+- Discard a twilight that is off the smooth line of its neighbours within a stap (and, with a
+  path, `outside_ci`). Keep `outside_ci` twilights that sit on the line: the position or the
+  calibration is wrong instead. With a calibration and a
   path, `twilight_check()` marks twilights outside the calibrated range (`outside_ci`): look at
   them, do not discard them all. Published discards are typically 2.5–8 % of twilights, 15–30 % for
   shaded, cavity or Arctic species.
 - Do not over-edit calibration staps: their scatter is the twilight error model.
-- When light contradicts a well-supported pressure position, say so to the user; discarding a whole
-  period is their decision.
+- When light contradicts a well-supported pressure position, first check that stay's twilights
+  (`plot(tag, type = "twilight")` over the stay; outliers left in shift the light map) and the
+  calibration, then say so to the user; discarding a whole period is their decision.
+- Calibrate with long staps too, not only the known sites: known sites are often short, at the
+  breeding site, or in mountains. `geolight_map(fitted_location_duration = )` (e.g. 20–30 days)
+  adds every long stap to the calibration and usually widens a too-strict light model.
+- Light maps of long stays are often too narrow: the calibration error is systematic and does not
+  shrink with the number of twilights, while `twl_llp` still sharpens the map with `n`. When a long
+  stay's light map is narrower than about 2–3°, or light and pressure disagree by more than its
+  width, say so and suggest a smaller `twl_llp` (e.g. `\(n) 0.5 * log(n) / n`) or a larger
+  `twl_calib_adjust` (the user's choice).
 
 ### Step 10. Final checks
 
 - `sd` is the user's choice (published: 0.5–2; larger for birds moving up and down).
+- Before judging how wide the maps are, read the pooling weights in the config:
+  `log_linear_pooling_weight` (pressure) and `twl_llp` (light), both `\(n) log(n)/n` by default. A
+  weight four times the default makes the pressure map as narrow as `sd` halved. If they differ from the default, report it; the
+  setting is the user's choice.
 - After the full model, read `pressurepath_check()` on `pressurepath_most_likely` and the flight
   speeds in `edge_most_likely`.
 - If flights changed after `tag_download_wind()`, the wind files must be downloaded again.
@@ -407,14 +449,14 @@ All within the guardrails of section 3.1.
 
 | Situation | Signal | Action |
 |---|---|---|
-| Isolated spike | 1–2 points, \|e\| > 5 hPa | `discard` |
+| Isolated spike | Evidence table, section 3.1 | `discard` |
 | Point at a stap edge off the level | first/last points far from the stap's level | Extend the flight, or `discard` |
 | Missed flight | A level change after a burst of activity, or a large jump that does not come back | Label the flight; the stap splits |
 | Temporary excursion that returns | Step of > 2–3 hPa for minutes to hours, then back | `discard` the excursion, or `elev_n` if it recurs |
-| Recurring second height | Second mode ≥ 2 hPa away with ≥ 5–10 % of points, in a stay ≥ 1 day | `elev_n` |
-| Day/night alternation | \|day − night\| > 1 hPa in a stay ≥ 1 day | Two levels, or (agreed strategy) discard daylight and keep the night roost. Above 2 hPa it is almost never noise |
+| Recurring second height | Second mode ≥ 1 hPa away with abrupt raw steps (≥ 2 hPa otherwise), ≥ 5–10 % of points, in a stay ≥ 1 day | `elev_n` |
+| Day/night alternation | \|day − night\| > 1 hPa in a stay ≥ 1 day | Look; two levels if ≥ 1 hPa apart with abrupt raw steps, or (agreed strategy) discard daylight and keep the night roost. Above 2 hPa it is almost never noise |
 | One-off height change that never returns | Another level before and after, no flight seen | A new stap (if activity supports a flight) or discard the shorter part |
-| Short level | A level under 12–24 h with few points | Discard rather than `elev_n`, unless it is a clean highest or lowest level |
+| Short level | A level under about 12 h with few points | Discard rather than `elev_n`, unless it is a clean highest or lowest level |
 | Slow drift in a long stay | Rolling mean of the residual moves > 2 hPa over weeks, at every plausible position | Split into levels by period, or discard the drifting part |
 | Noisy sensor | High sd at every plausible position, no structure | A larger `sd` (user's choice); do not discard to compensate |
 | Off-terrain resting altitude | `pressurepath$altitude` outside the ground range | Not a labelling issue: position, `margin`, sensor offset |
@@ -469,19 +511,15 @@ Marsh Warbler CS338 stap 16 (2024-07-29 → 08-10).
 
 ## 8. Pitfalls
 
-1. **Self-confirming labels and over-labelling** (section 3).
+1. **Over- and under-labelling** (section 3.1).
 2. **Off-by-one at flight boundaries**: check the first and last pressure points of every stap.
 3. **Fragmented flights** and **non-migratory bouts labelled as flight**: many short staps.
 4. **Real flights deleted** because they happen by day.
 5. **Flip-flopping** between rounds on ambiguous flights: write down the rule used and keep it.
-6. **A stap entirely discarded**: `geopressure_map()` stops.
-7. **Short noisy `elev_n` levels**: they veto the mask for the whole stap.
-8. **`flight` on pressure when acceleration is labelled**: ignored for staps, confusing in files.
-9. **Trainset and GeoLightViz Save write `<id>-labeled.csv`**, and `trainset(tag)` on an unlabelled
+6. **`flight` on pressure when acceleration is labelled**: ignored for staps, confusing in files.
+7. **Trainset and GeoLightViz Save write `<id>-labeled.csv`**, and `trainset(tag)` on an unlabelled
    tag restarts from automatic labels (section 9 for agent rounds).
-10. **Relabelling after crop or clock changes**: the timestamps change; rebuild from `tag_create()`.
-11. **Labels checked with other map settings** than the project's (`margin`, `sd`, `thr_mask`).
-12. **Trying to fix extent, position or sensor problems with labels.**
+8. **Relabelling after crop or clock changes**: the timestamps change; rebuild from `tag_create()`.
 
 ## 9. Working with the user
 
@@ -535,7 +573,7 @@ path <- tag2path(tag_m)
 # Step 5: residuals along the path, then one stap at a time
 pp <- pressurepath_create(tag, path)
 pressurepath_check(pp, sd = sd)
-s <- 12
+s <- 5  # a stap flagged by pressurepath_check() (18LX has 5 staps)
 p_s <- path[path$stap_id == s, ]
 ts <- geopressure_timeseries(p_s$lat, p_s$lon, pressure = tag$pressure[tag$pressure$stap_id == s, ])
 pressurepath_check(ts, sd = sd)            # repeat at a clearly different position
@@ -566,8 +604,21 @@ do.call(rbind, lapply(split(which(ch), run[ch]), \(i) data.frame(
   start = min(tag$pressure$date[i]), end = max(tag$pressure$date[i]), n = length(i),
   from = old[i[1]], to = lab[i[1]]
 )))
-k <- tag$pressure$stap_id %% 1 == 0                   # ground points only
-round(100 * tapply(lab[k] == "discard", tag$pressure$stap_id[k], mean), 1)  # discard % per stap
+ground <- tag$pressure$stap_id %% 1 == 0             # ground points only
+round(100 * tapply(lab[ground] == "discard", tag$pressure$stap_id[ground], mean), 1)  # discard % per stap
+
+# Residual plot of every stay longer than 5 days (look at each; sd alone hides spikes and steps)
+for (s in tag$stap$stap_id[stap2duration(tag$stap) > 5]) {
+  g <- plot_pressurepath(pp[pp$stap_id == s, ], sd = sd, plot_plotly = FALSE)
+  ggplot2::ggsave(glue::glue("label-check-{id}-{s}.png"), g, width = 10, height = 4)
+}
+
+# Step 4: mean ground speed per leg, between the two longest stays (e.g. breeding and wintering)
+path$j <- 1                                            # path2edge() needs a j column
+ed <- path2edge(path, tag_m)                          # needs a tag with a map
+long <- sort(order(stap2duration(tag$stap), decreasing = TRUE)[1:2])
+leg <- ed$stap_s >= long[1] & ed$stap_t <= long[2]
+sum(ed$distance[leg]) / sum(as.numeric(ed$duration[leg], units = "hours"))  # km/h
 
 # Write the round to a new file, rebuild, loop to step 3
 f <- glue::glue("data/tag-label/{id}-agent-r1-labeled.csv")
@@ -595,9 +646,9 @@ conservative one (keep the point, keep the stap), and ask the user.
 
 - The exact flight end (last active sample, return to ground pressure, or fixed padding).
 - When a short halt or a short burst is a new stap.
-- The minimum length of an `elev_n` level (practice: often 6 h; the Manual suggests discarding
-  levels shorter than 12–24 h).
+- The minimum length of an `elev_n` level: this guide uses about 12 h, a convention (practice:
+  often 6 h; the Manual suggests 12–24 h).
 - What to keep in a stay with no consistent level.
 - `sd` per stap (supported by `geopressure_map_likelihood()`, not by the Template config).
-- Twilight calibration settings (`fitted_location_duration`, `twl_calib_adjust`).
+- Twilight calibration beyond Step 9 (`twl_calib_adjust`, `twl_llp`).
 - Which to trust when light and pressure disagree.

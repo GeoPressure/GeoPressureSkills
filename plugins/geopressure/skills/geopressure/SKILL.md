@@ -138,7 +138,9 @@ The step-by-step procedure lives in the GeoPressureTemplate, so it stays in step
 
 Read `references/labelling.md` (in this skill's folder) before labelling or judging labels. The
 core rule: a label set against a wrong position confirms itself, so over-labelling is the usual
-mistake; label only what the tag's own data show, and leave doubtful points. Labels are the
+mistake; label only what the tag's own data show, and leave doubtful points. But fix clear errors:
+spikes in long stays, missed flights, wrong levels, twilight outliers (see "Signs of
+under-labelling"). Labels are the
 user's decisions: propose them in a new round file, never over `<id>-labeled.csv`.
 
 ### "How do I...?" or "Why does this fail?"
