@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: mountain-daily-jumps
+expected_outcome: |
+  Does not label the daily jumps as flights. Explains that jumps of tens of hPa that come back the same day are movements between heights within a stationary period, and that a flight needs activity and a new ground level afterwards. Proposes elevation levels or discards for those movements, keeping the most common level and the clean highest and lowest ones, and mentions that a larger margin or sd can suit such birds (the user's choice).

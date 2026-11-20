@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: labelling-old-version
+expected_outcome: |
+  Checks or asks for the installed GeoPressureR version, says that tag_label_check() and pressurepath_check() need GeoPressureR 3.9.1 or later, proposes updating as the user's decision, and gives the equivalent checks available in older versions (the TRAINSET Check button, plot_pressurepath(type = 'hist')).

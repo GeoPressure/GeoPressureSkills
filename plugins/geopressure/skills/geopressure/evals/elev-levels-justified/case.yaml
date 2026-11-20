@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: elev-levels-justified
+expected_outcome: |
+  Recognises that abrupt, daily repeated steps of about 9 hPa at dawn and dusk, seen at two clearly different positions and in the raw pressure, are two heights (roost and foraging site), not a position problem. Recommends labelling them as two elevation levels (elev_1 for one of them), or, as an option the user must agree to, discarding the daytime points and keeping the night roost. Says the labels go to a new round file for the user to review, and that each level must be clean because each one must fit the ground of a pixel on its own.

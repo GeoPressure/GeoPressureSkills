@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: label-auto-stapelev-all-staps
+expected_outcome: |
+  Does not run the automatic stapelev on every stationary period. Explains that it relabels every non-flight point of a stap (manual discards included) and trusts the position, so applied everywhere it over-labels and can confirm wrong positions. Proposes a staged process instead: structure checks and flights first, coarse maps and positions, residual flags, then the automatic stapelev only on staps flagged as having two levels at positions that are stable and pass a check at a second position, each proposal reviewed with a label diff. Writes any labels to new round files rather than over <id>-labeled.csv, and leaves the review to the user in trainset().

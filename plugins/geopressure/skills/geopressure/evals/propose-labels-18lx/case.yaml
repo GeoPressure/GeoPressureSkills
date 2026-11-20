@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: propose-labels-18lx
+expected_outcome: |
+  Works in the copied 18LX example project. Uses the project's settings (geopressuretemplate_config), runs the checks, looks at the stationary periods with a sign of a problem, and proposes pressure labels only where the tag's data support them, or reports that few or no changes are needed. Writes any proposal to a new round file (for example data/tag-label/18LX-agent-r1-labeled.csv) and leaves data/tag-label/18LX-labeled.csv unchanged. Reports the changes (or the absence of changes) with their evidence, leaves short stationary periods alone, and asks the user to review the proposal in trainset().
+context:
+  scaffold_script: place-files.sh

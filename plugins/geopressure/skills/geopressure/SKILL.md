@@ -1,7 +1,7 @@
 ---
 name: geopressure
 license: MIT
-description: Use for anything about tracking birds or other animals with multi-sensor geolocators (pressure, light, acceleration, temperature or magnetic loggers) and the GeoPressure tools - GeoPressureR, GeoPressureTemplate, GeoPressureManual, GeoPressureAPI, GeoLocatoR and GeoLocator Data Packages, GeoMagR, GeoPathSampleR, GeoLocator Explorer. Covers running an analysis from raw logger files (SOI .pressure/.glf/.acceleration, Migrate Technology .deg/.lux, Lund, PresTag, BAS, CSV), labelling flights, likelihood maps, trajectories with wind, altitude, reading and plotting results, error messages, updating old scripts, explaining the method and papers, citing, planning a tracking study, and publishing or reusing tracks on Zenodo. Use it even when no package is named, e.g. "here are my logger files, where did my bird go?"
+description: Use for anything about tracking birds or other animals with multi-sensor geolocators (pressure, light, acceleration, temperature or magnetic loggers) and the GeoPressure tools - GeoPressureR, GeoPressureTemplate, GeoPressureManual, GeoPressureAPI, GeoLocatoR and GeoLocator Data Packages, GeoMagR, GeoPathSampleR, GeoLocator Explorer. Covers running an analysis from raw logger files (SOI .pressure/.glf/.acceleration, Migrate Technology .deg/.lux, Lund, PresTag, BAS, CSV), labelling flights and pressure (discard, elev_n, stapelev, TRAINSET, automatic stapelev) and twilights, likelihood maps, trajectories with wind, altitude, reading and plotting results, error messages, updating old scripts, explaining the method and papers, citing, planning a tracking study, and publishing or reusing tracks on Zenodo. Use it even when no package is named, e.g. "here are my logger files, where did my bird go?"
 ---
 
 # GeoPressure
@@ -133,6 +133,13 @@ The step-by-step procedure lives in the GeoPressureTemplate, so it stays in step
    `data/raw-tag/<id>/`.
 5. Open the project's `AGENTS.md` and follow it. If the project has none (created from an older
    Template), follow the Manual's GeoPressureTemplate chapters and the `analysis/` scripts in order.
+
+### Labelling a track (flights, pressure, twilights)
+
+Read `references/labelling.md` (in this skill's folder) before labelling or judging labels. The
+core rule: a label set against a wrong position confirms itself, so over-labelling is the usual
+mistake; label only what the tag's own data show, and leave doubtful points. Labels are the
+user's decisions: propose them in a new round file, never over `<id>-labeled.csv`.
 
 ### "How do I...?" or "Why does this fail?"
 

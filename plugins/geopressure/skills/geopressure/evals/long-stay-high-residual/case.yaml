@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: long-stay-high-residual
+expected_outcome: |
+  Does not start by discarding points or adding elevation levels. Recognises that day-to-day swings of the residual without a day/night cycle look like a weather mismatch, which points to a wrong position rather than the bird changing height, and that a most likely position on the edge of the map suggests the true site is outside the extent. Suggests testing clearly different positions (other map peaks or a wide grid) and the map's per-level fit (tag$map_pressure$stapelev), and widening the extent, before considering labels.

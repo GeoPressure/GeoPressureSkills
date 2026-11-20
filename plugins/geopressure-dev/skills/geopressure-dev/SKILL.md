@@ -51,9 +51,24 @@ Check the branch and deploy flow in each repo's `.github/workflows/` before rely
 | altitude-validation | Compendium of the altitude paper | R scripts, Quarto manuscript | `main`; tag per submission |
 | GeoPressureSkills | Agent skills `geopressure` (users) and `geopressure-dev` | Markdown, R | `main` |
 
-- **GeoPressureAPI**: Python Google Cloud Functions on Earth Engine (`map`, `timeseries`,
-  `elevationPath`, `pressurePath`), deployed by hand per function (README, Deployment);
-  `test-server.yml` calls the live endpoints every 12 h.
+- **GeoPressureAPI**: Python functions on Earth Engine (`map`, `timeseries`, `elevationPath`,
+  `pressurePath`), each folder a separate service. **A push or merge to `main` deploys**:
+  - four Cloud Build triggers in the GCP project `cloud-service-mgravey` build each folder with
+    buildpacks;
+  - the build deploys it to the Cloud Run service `geopressureapi-<folder>` in `us-central1`.
+  - `https://glp.mgravey.com/GeoPressure/v2/<endpoint>/` (nginx) answers with a 307 redirect to
+    those services.
+
+  Checking a deploy:
+  - `gcloud builds list --project cloud-service-mgravey --limit 4` (status and short SHA of each
+    build);
+  - `gcloud run services list --project cloud-service-mgravey`.
+
+  The maintainer's gcloud account can read both. Changing a trigger or a service (for example its
+  environment variables) is the maintainer's step.
+
+  A failed build leaves the previous revision serving without any error to clients: check the
+  builds after every merge. `test-server.yml` calls the live endpoints every 12 h.
 - **GeoLocatorExplorer**: Vue 3 + Vite web map with Python data scripts; deploys to `gh-pages` on
   push to `main`.
 - **geopressure.github.io**: Vue 3 + Vite site of geopressure.org; deploys on push to `main`.

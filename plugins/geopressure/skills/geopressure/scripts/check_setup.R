@@ -7,7 +7,9 @@ report <- function(ok, msg) {
 }
 installed <- function(p) nzchar(system.file(package = p))
 reachable <- function(u) {
-  !inherits(try(curlGetHeaders(u, timeout = 10), silent = TRUE), "try-error")
+  # The server answers (any status below 500; the API answers 405 to a bare HEAD request)
+  h <- try(curlGetHeaders(u, timeout = 10), silent = TRUE)
+  !inherits(h, "try-error") && attr(h, "status") < 500
 }
 
 # R
@@ -75,7 +77,7 @@ has_key <- function(service) {
 }
 report(
   has_key("ecmwfr"),
-  "Copernicus CDS key (for wind): set by the user with ecmwfr::wf_set_key(); accept the dataset licence on the CDS website too"
+  "ECMWF key, set by the user with ecmwfr::wf_set_key(): wind downloads from the CDS, and faster ERA5 time series and pressure paths from ARCO (accept the dataset licence on the CDS website too)"
 )
 report(
   has_key("ZENODO_TOKEN") || nzchar(Sys.getenv("ZENODO_TOKEN")),

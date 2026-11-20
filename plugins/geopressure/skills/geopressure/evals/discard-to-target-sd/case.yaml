@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: discard-to-target-sd
+expected_outcome: |
+  Declines to discard points until every stationary period's empirical sd is below the sd used. Explains what the red panels mean (empirical sd above sd) and that discarding to reach a target hides problems and can move positions (self-confirming labels). Proposes per-stap diagnosis instead: spikes and stap-edge points that are visible in the raw data, two levels confirmed by abrupt steps, the position checked at a second location; leaving short or noisy staps as they are and explaining them; and, as the user's choice, a larger sd if the noise is real.
