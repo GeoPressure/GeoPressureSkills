@@ -246,7 +246,9 @@ Settle these first; labels made before them are lost.
 
 - Crop to attachment–retrieval or logger failure (`crop_start`, `crop_end`): look at pressure,
   activity and light at both ends. Pre-attachment data ruin the mask.
-- Clock: `time_shift`, `time_drift`. A wrong clock shifts twilights and flights.
+- Clock: `time_shift`, `time_drift`. A wrong clock shifts twilights and flights. Twilights that
+  step away from the expected ones at a known site mean a logger that paused: read
+  `references/clock.md`.
 - Pressure: sampling of 1 h or less; plausible values; no flat stretches (dead sensor); data gaps
   noted; no offset or slow drift visible as an impossible altitude (check
   `pressurepath$altitude` later).
