@@ -1,6 +1,6 @@
 {
   "name": "geopressure-dev",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "For developers of the GeoPressure repositories: the shared development standard, release order, carrying a change across repos, and checking the docs against the release.",
   "author": {
     "name": "Raphaël Nussbaumer"
