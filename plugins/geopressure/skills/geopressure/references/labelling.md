@@ -244,6 +244,13 @@ has the code.
 
 Settle these first; labels made before them are lost.
 
+- **Aerial feeders: do not label.** Swallows, martins, swifts, bee-eaters and other birds that feed
+  in flight move up and down all day, so their pressure has no stationary ground level and no
+  clear flight boundaries. Do not label them, as an agent, unless the user explicitly asks; then
+  only with extreme caution, every flight and level checked with the user, and the result reported
+  as uncertain. Say so before starting, and stop rather than invent flights or discard most of the
+  data to make a track.
+
 - Crop to attachment–retrieval or logger failure (`crop_start`, `crop_end`): look at pressure,
   activity and light at both ends. Pre-attachment data ruin the mask.
 - Clock: `time_shift`, `time_drift`. A wrong clock shifts twilights and flights. Twilights that

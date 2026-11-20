@@ -140,7 +140,8 @@ Read `references/labelling.md` (in this skill's folder) before labelling or judg
 core rule: a label set against a wrong position confirms itself, so over-labelling is the usual
 mistake; label only what the tag's own data show, and leave doubtful points. But fix clear errors:
 spikes in long stays, missed flights, wrong levels, twilight outliers (see "Signs of
-under-labelling"). Labels are the
+under-labelling"). Do not label aerial feeders (swallows, martins, swifts, bee-eaters) unless the
+user explicitly asks, and then only with extreme caution. Labels are the
 user's decisions: propose them in a new round file, never over `<id>-labeled.csv`.
 
 ### A wrong clock (offset, drift or jumps)
