@@ -554,6 +554,46 @@ the user labels, and a label file is edited only with their agreement.
 - Do not change `sd`, `margin`, `thr_mask`, `extent` or `known` to make labels look better; propose
   them separately with reasons.
 
+### 9.1 How the user reviews the result
+
+An agent's labels are a proposal until the user has looked at them. At the end, give the user this
+review, filled in for their tag (stap ids, dates and what to look at), and wait for their answer
+before anything is copied to `<id>-labeled.csv`. Run it after the full model
+(`geopressuretemplate(id)` or the Template's scripts), from the project root:
+
+```r
+id <- "<id>"
+load(glue::glue("data/interim/{id}.RData"))   # tag, path_most_likely, pressurepath_most_likely, ...
+
+# 1. The trajectory: positions, flight durations and speeds, each stap's pressure against ERA5.
+#    Move a stap on the map to see whether its pressure fits better elsewhere.
+geopressureviz(id)
+
+# 2. Pressure: residual of every stap along the most likely path (outliers, steps, day cycles)
+plot_pressurepath(pressurepath_most_likely)
+plot_pressurepath(pressurepath_most_likely, type = "hist")   # error sd per stap against sd
+
+# 3. Light: twilights with the times expected along the path, and the calibration
+plot(tag, type = "twilight", twilight_line = path2twilight(path_most_likely))
+plot_twl_calib(tag, path_most_likely)
+
+# 4. Edit, if needed, in the round file (Save writes back to it)
+trainset(glue::glue("data/tag-label/{id}-agent-r2-labeled.csv"))
+```
+
+What to ask the user to look at:
+- **GeoPressureViz**: the staps you changed or flagged; flight speeds that look too fast or too
+  slow; short staps far off the route; positions that light does not support.
+- **Pressure plots**: long stays with spikes or steps left in, and levels you added (do they hold
+  for the whole period?).
+- **Twilight plots**: twilights off the expected line in long stays (discard or keep?), and
+  whether the line follows the twilights at each long stay. A systematic offset at one stay is a
+  position or calibration problem, not a twilight label.
+- **Your list of open decisions**: each with the two options and what each does to the track.
+
+Then apply the user's feedback in a new round, rerun, and give the same review again for the
+staps that changed.
+
 ## 10. Recipes
 
 GeoPressureR (>= 3.9.1) only. In a Template project, use the project's settings so that the checks
