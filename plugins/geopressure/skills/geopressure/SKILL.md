@@ -77,6 +77,7 @@ the current list.
 | Flight altitude from pressure | Manuscript in review; code at https://github.com/GeoPressure/altitude-validation | `pressurepath` | `R/pressurepath_create.R`; GeoPressureAPI `altitude.py` |
 | Paths from light-only data | Manuscript in review; see the GeoPathSampleR site | | GeoPathSampleR |
 | Combining likelihoods from several sensors | | `probability-aggregation` | |
+| Data standard (GeoLocator DP) and the Master GeoLocator Data Package (concept DOI 10.5281/zenodo.18187092) | Nussbaumer et al. 2026, Scientific Data, https://doi.org/10.1038/s41597-026-08873-x | `geolocator-create`, `geolocator-read`, `geolocator-master` | GeoLocatoR; GeoLocator-DP; GeoLocatorMaster |
 
 ## Working rules
 
